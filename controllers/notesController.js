@@ -10,8 +10,8 @@ const getAllNotes = asyncHandler(async (req, res) => {
     const notes = await Note.find().lean()
 
     // If no notes 
-    if (!notes?.length) {
-        return res.status(400).json({ message: 'No notes found' })
+    if (notes?.length === 0 ) {
+        return res.status(200).json({ message: 'No notes found' })
     }
 
     // Add username to each note before sending the response 
@@ -38,7 +38,7 @@ const createNewNote = asyncHandler(async (req, res) => {
 
     // Check for duplicate title
     const duplicate = await Note.findOne({ title }).lean().exec()
-
+    console.log(duplicate)
     if (duplicate) {
         return res.status(409).json({ message: 'Duplicate note title' })
     }
